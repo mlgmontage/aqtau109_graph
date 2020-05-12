@@ -18,8 +18,8 @@ fetch("http://localhost:8080/api/v1/departments")
   });
 
 function createElement(data) {
-  const p = document.createElement("canvas");
-  const ctx = p.getContext("2d");
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
   fetch(`http://localhost:8080/api/v1/count_tickets/${data.id}`)
     .then((response) => response.json())
@@ -29,54 +29,103 @@ function createElement(data) {
         type: "bar",
 
         data: {
-          labels: ["all", "closed", "dislike", "like", "open", "prosrocheno"],
+          labels: [data.name.ru],
           datasets: [
             {
-              label: data.name.ru,
-              backgroundColor: "rgb(100, 99, 132)",
-              data: [
-                stat_data.all,
-                stat_data.closed,
-                stat_data.dislike,
-                stat_data.like,
-                stat_data.open,
-              ],
+              label: "all",
+              backgroundColor: "#FE9A76",
+              data: [stat_data.all],
+            },
+            {
+              label: "open",
+              backgroundColor: "#B03060",
+              data: [stat_data.open],
+            },
+            {
+              label: "closed",
+              backgroundColor: "#008080",
+              data: [stat_data.closed],
+            },
+
+            {
+              label: "like",
+              backgroundColor: "#0E6EB8",
+              data: [stat_data.like],
+            },
+            {
+              label: "dislike",
+              backgroundColor: "#EE82EE",
+              data: [stat_data.dislike],
+            },
+            {
+              label: "prosrocheno",
+              backgroundColor: "#B413EC",
+              data: [stat_data.prosrocheno],
             },
           ],
         },
 
-        options: {},
+        options: {
+          title: {
+            display: true,
+            text: data.name.ru,
+          },
+        },
       });
     });
 
   // appending to DOM
-  // document.body.appendChild(p);
-  graphArea.appendChild(p);
+  graphArea.appendChild(canvas);
 }
 
-function drawGraph(data) {
+function drawGraph(stat_data) {
   const ctx = document.getElementById("graph").getContext("2d");
+
   const chart = new Chart(ctx, {
     type: "bar",
 
     data: {
-      labels: ["all", "closed", "dislike", "like", "open", "prosrocheno"],
+      labels: ["all"],
       datasets: [
         {
-          label: "Sum tickets",
-          backgroundColor: "rgb(100, 99, 132)",
-          data: [
-            data.all,
-            data.closed,
-            data.dislike,
-            data.like,
-            data.open,
-            data.prosrocheno,
-          ],
+          label: "all",
+          backgroundColor: "#FE9A76",
+          data: [stat_data.all],
+        },
+        {
+          label: "open",
+          backgroundColor: "#B03060",
+          data: [stat_data.open],
+        },
+        {
+          label: "closed",
+          backgroundColor: "#008080",
+          data: [stat_data.closed],
+        },
+
+        {
+          label: "like",
+          backgroundColor: "#0E6EB8",
+          data: [stat_data.like],
+        },
+        {
+          label: "dislike",
+          backgroundColor: "#EE82EE",
+          data: [stat_data.dislike],
+        },
+        {
+          label: "prosrocheno",
+          backgroundColor: "#B413EC",
+          data: [stat_data.prosrocheno],
         },
       ],
     },
 
-    options: {},
+    options: {
+      title: {
+        display: true,
+        text: "all",
+      },
+    },
   });
 }
