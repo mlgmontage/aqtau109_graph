@@ -1,14 +1,15 @@
 const graphArea = document.getElementById("graphArea");
+const host = `http://localhost:8080/api/v1`;
 
 // All
-fetch("http://localhost:8080/api/v1/count_tickets")
+fetch(`${host}/count_tickets`)
   .then((response) => response.json())
   .then((data) => {
     drawGraph(data);
   });
 
 // individual departments
-fetch("http://localhost:8080/api/v1/departments")
+fetch(`${host}/departments`)
   .then((response) => response.json())
   .then((jsonData) => {
     const data = jsonData.data;
@@ -21,7 +22,7 @@ function createElement(data) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  fetch(`http://localhost:8080/api/v1/count_tickets/${data.id}`)
+  fetch(`${host}/count_tickets/${data.id}`)
     .then((response) => response.json())
     .then((stat_data) => {
       console.log(stat_data);
