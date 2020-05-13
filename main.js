@@ -5,70 +5,68 @@ const host = `http://localhost:8080/api/v1`;
 fetch(`${host}/count_tickets`)
   .then((response) => response.json())
   .then((data) => {
-    drawGraph(data);
+    drawTotalGraph(data);
   });
 
-// individual departments
+// iterating through individual departments
 fetch(`${host}/departments`)
   .then((response) => response.json())
   .then((jsonData) => {
     const data = jsonData.data;
     for (let i = 0; i < data.length; i++) {
-      createElement(data[i]);
+      drawIndividual(data[i]);
     }
   });
 
-function createElement(data) {
+function drawIndividual(data) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
   fetch(`${host}/count_tickets/${data.id}`)
     .then((response) => response.json())
     .then((stat_data) => {
-      console.log(stat_data);
       const chart = new Chart(ctx, {
-        type: "bar",
+        type: "horizontalBar",
 
         data: {
           labels: [data.name.ru],
           datasets: [
             {
-              label: "all",
+              label: "Всего",
               backgroundColor: "#FE9A76",
               data: [stat_data.all],
             },
             {
-              label: "open",
+              label: "Открытые",
               backgroundColor: "#B03060",
               data: [stat_data.open],
             },
             {
-              label: "closed",
+              label: "Закрытые",
               backgroundColor: "#008080",
               data: [stat_data.closed],
             },
 
             {
-              label: "like",
+              label: "Лайки",
               backgroundColor: "#0E6EB8",
               data: [stat_data.like],
             },
             {
-              label: "dislike",
+              label: "Дизлайки",
               backgroundColor: "#EE82EE",
               data: [stat_data.dislike],
-            },
-            {
-              label: "prosrocheno",
-              backgroundColor: "#B413EC",
-              data: [stat_data.prosrocheno],
             },
           ],
         },
 
         options: {
+          responsive: true,
+          legend: {
+            position: "right",
+          },
           title: {
-            display: true,
+            display: false,
             text: data.name.ru,
           },
         },
@@ -79,52 +77,51 @@ function createElement(data) {
   graphArea.appendChild(canvas);
 }
 
-function drawGraph(stat_data) {
+// draw graph total stat
+function drawTotalGraph(stat_data) {
   const ctx = document.getElementById("graph").getContext("2d");
 
   const chart = new Chart(ctx, {
-    type: "bar",
+    type: "horizontalBar",
 
     data: {
-      labels: ["all"],
+      labels: ["Все"],
       datasets: [
         {
-          label: "all",
+          label: "Всего",
           backgroundColor: "#FE9A76",
           data: [stat_data.all],
         },
         {
-          label: "open",
+          label: "Открытые",
           backgroundColor: "#B03060",
           data: [stat_data.open],
         },
         {
-          label: "closed",
+          label: "Закрытые",
           backgroundColor: "#008080",
           data: [stat_data.closed],
         },
-
         {
-          label: "like",
+          label: "Лайки",
           backgroundColor: "#0E6EB8",
           data: [stat_data.like],
         },
         {
-          label: "dislike",
+          label: "Дизлайки",
           backgroundColor: "#EE82EE",
           data: [stat_data.dislike],
-        },
-        {
-          label: "prosrocheno",
-          backgroundColor: "#B413EC",
-          data: [stat_data.prosrocheno],
         },
       ],
     },
 
     options: {
+      responsive: true,
+      legend: {
+        position: "right",
+      },
       title: {
-        display: true,
+        display: false,
         text: "all",
       },
     },
